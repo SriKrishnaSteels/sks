@@ -17,7 +17,7 @@
 
 <div class="box">
   <h2>Admin Login</h2>
-  <input type="email" id="email" placeholder="Email" autocomplete="username">
+  <input type="text" id="username" placeholder="Username" autocomplete="username">
   <input type="password" id="password" placeholder="Password" autocomplete="current-password">
   <button id="loginBtn">Log In</button>
   <div id="error"></div>
@@ -33,17 +33,24 @@
   });
 
   document.getElementById("loginBtn").addEventListener("click", () => {
-    const email = document.getElementById("email").value.trim();
+    const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
     const errorDiv = document.getElementById("error");
     errorDiv.textContent = "";
+
+    if (!username) {
+      errorDiv.textContent = "Please enter your username.";
+      return;
+    }
+
+    const email = username + "@sks.local";
 
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         window.location.href = "admin-dashboard.html";
       })
       .catch((err) => {
-        errorDiv.textContent = "Login failed: check your email and password.";
+        errorDiv.textContent = "Login failed: check your username and password.";
         console.error(err);
       });
   });
