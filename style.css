@@ -227,6 +227,60 @@ box-shadow:0 10px 25px rgba(242,177,52,.35);
 
 }
 
+/* Translate Widget */
+
+.translate-widget{
+
+margin-left:12px;
+	display:flex;
+
+align-items:center;
+
+}
+
+.translate-widget .goog-te-gadget{
+
+font-family:"Poppins",sans-serif !important;
+
+}
+
+.translate-widget .goog-te-gadget-simple{
+
+background:rgba(255,255,255,.14);
+
+border:1px solid rgba(255,255,255,.25);
+
+border-radius:999px;
+
+padding:8px 12px;
+	display:flex;
+
+align-items:center;
+
+color:white;
+
+transition:.3s;
+
+}
+
+.translate-widget .goog-te-gadget-simple:hover{
+
+background:rgba(255,255,255,.22);
+
+}
+
+.translate-widget .goog-te-gadget-simple .goog-te-menu-value span{
+
+color:white !important;
+
+}
+
+.translate-widget .goog-te-gadget-simple img,
+.translate-widget .goog-te-gadget-icon{
+	display:none;
+
+}
+
 /* Hamburger */
 
 .hamburger{
