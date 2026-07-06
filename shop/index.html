@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shop | Sri Krishna Steels</title>
+
+    <meta name="description"
+        content="Browse our full range of steel, cement and construction materials.">
+
+    <meta name="theme-color" content="#003B73">
+
+    <link rel="icon" href="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        .shop-header {
+            background: #003B73;
+            color: #fff;
+            padding: 60px 5% 40px;
+            text-align: center;
+        }
+        .shop-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        .shop-header p {
+            color: #cfe0f0;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 16px;
+            color: #cfe0f0;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .shop-products {
+            padding: 50px 5%;
+        }
+        #productList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .product-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            width: 240px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            text-align: left;
+        }
+        .product-card h4 {
+            margin: 0 0 10px;
+            color: #003B73;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .product-card .price {
+            color: #b23b3b;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .product-card .stock {
+            font-size: 13px;
+            color: #777;
+            margin-top: 6px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="shop-header">
+    <h1>Our Shop</h1>
+    <p>Browse our live inventory of steel, cement and construction materials.</p>
+    <a href="../index.html" class="back-link">&larr; Back to Home</a>
+</div>
+
+<section class="shop-products">
+
+    <div id="productList">Loading products...</div>
+
+</section>
+
+<script type="module">
+    import { db } from "../firebase-config.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+    async function loadProducts() {
+        const listDiv = document.getElementById("productList");
+        try {
+            const snapshot = await getDocs(collection(db, "items"));
+
+            if (snapshot.empty) {
+                listDiv.innerHTML = "<p>No products available right now. Please check back soon.</p>";
+                return;
+            }
+
+            listDiv.innerHTML = "";
+            snapshot.forEach((docSnap) => {
+                const item = docSnap.data();
+                const card = document.createElement("div");
+                card.className = "product-card";
+                card.innerHTML = `
+                    <h4>${item.name}</h4>
+                    <div class="price">₹${item.price}</div>
+                    <div class="stock">${item.stock > 0 ? "In stock: " + item.stock : "Out of stock"}</div>
+                `;
+                listDiv.appendChild(card);
+            });
+        } catch (err) {
+            listDiv.innerHTML = "<p>Unable to load products right now. Please try again later.</p>";
+            console.error(err);
+        }
+    }
+
+    loadProducts();
+</script>
+
+</body>
+</html>
