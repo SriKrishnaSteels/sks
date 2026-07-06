@@ -113,12 +113,19 @@
     const price = Number(document.getElementById("itemPrice").value);
     const stock = Number(document.getElementById("itemStock").value);
     const msg = document.getElementById("formMsg");
+    const saveBtn = document.getElementById("saveBtn");
 
     if (!name || !price) {
       msg.textContent = "Please enter at least a name and price.";
       msg.style.color = "red";
       return;
     }
+
+    const originalText = saveBtn.textContent;
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving...";
+    saveBtn.style.opacity = "0.7";
+    msg.textContent = "";
 
     try {
       if (id) {
@@ -135,6 +142,10 @@
       msg.textContent = "Error saving item.";
       msg.style.color = "red";
       console.error(err);
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = originalText;
+      saveBtn.style.opacity = "1";
     }
   });
 
