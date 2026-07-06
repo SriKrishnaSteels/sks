@@ -771,6 +771,32 @@ Friendly assistance before and after every purchase.
 
 <script src="script.js"></script>
 
+<script>
+    // Hide the WhatsApp button whenever the Back to Top button becomes visible
+    (function() {
+        const topBtn = document.getElementById('topBtn');
+        const waBtn = document.querySelector('.whatsapp-float');
+
+        function syncWhatsAppVisibility() {
+            if (!topBtn || !waBtn) return;
+            const topBtnVisible = window.getComputedStyle(topBtn).display !== 'none' 
+                && window.getComputedStyle(topBtn).visibility !== 'hidden'
+                && window.getComputedStyle(topBtn).opacity !== '0';
+            waBtn.style.display = topBtnVisible ? 'none' : 'flex';
+        }
+
+        // Re-check whenever topBtn's style/class changes (however script.js toggles it)
+        const observer = new MutationObserver(syncWhatsAppVisibility);
+        if (topBtn) {
+            observer.observe(topBtn, { attributes: true, attributeFilter: ['style', 'class'] });
+        }
+
+        // Also check on scroll, in case visibility is scroll-driven without attribute changes
+        window.addEventListener('scroll', syncWhatsAppVisibility);
+        syncWhatsAppVisibility();
+    })();
+</script>
+
 </body>
 
 </html>
