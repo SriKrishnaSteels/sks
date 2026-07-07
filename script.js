@@ -4,39 +4,7 @@
 // ===========================================
 
 // ================= NAVBAR SCROLL =================
-// script.js
-import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
 
-// 1. Fetch data publicly (this will work for everyone)
-async function fetchSteelInventory() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "materials"));
-    querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} =>`, doc.data());
-      // Append these items to your HTML tables or UI cards here
-    });
-  } catch (error) {
-    console.error("Firestore Fetch Failed:", error);
-  }
-}
-
-// 2. Track authentication status
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("Admin Logged In:", user.email);
-    // Show hidden admin actions like "Add Item", "Delete Item" buttons
-    document.getElementById("admin-controls").style.display = "block";
-  } else {
-    console.log("Viewing as public visitor.");
-    // Hide administrative actions
-    document.getElementById("admin-controls").style.display = "none";
-  }
-});
-
-// Run fetch automatically on load
-fetchSteelInventory();
 
 const navbar = document.querySelector(".navbar");
 
