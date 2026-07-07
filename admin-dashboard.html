@@ -66,6 +66,34 @@
   window.debugAddDoc = addDoc;
   window.debugCollection = collection;
 
+  // REST API test - bypasses Firestore SDK's WebChannel transport entirely
+  window.debugRestTest = async function() {
+    const token = await auth.currentUser.getIdToken();
+    const projectId = "sri-krishna-steels-c1ce6";
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/items`;
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fields: {
+            name: { stringValue: "REST Test" },
+            price: { integerValue: "1" },
+            stock: { integerValue: "1" }
+          }
+        })
+      });
+      const data = await res.json();
+      console.log("REST STATUS:", res.status);
+      console.log("REST RESPONSE:", data);
+    } catch (err) {
+      console.log("REST FETCH FAILED:", err.message);
+    }
+  };
+
   const itemsRef = collection(db, "items");
 
   // --- Auth gate: only logged-in admins see the dashboard ---
