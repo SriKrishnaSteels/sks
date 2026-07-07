@@ -236,42 +236,6 @@ margin-left:12px;
 
 align-items:center;
 
-gap:8px;
-
-}
-
-.translate-toggle{
-
-background:#ffffff;
-
-border:1px solid #d8e3ef;
-
-border-radius:999px;
-
-padding:8px 14px;
-
-color:#003B73;
-
-font-weight:600;
-
-font-family:"Poppins",sans-serif;
-
-cursor:pointer;
-
-box-shadow:0 4px 12px rgba(0,0,0,.12);
-
-transition:.3s;
-
-}
-
-.translate-toggle:hover{
-
-background:#f6faff;
-
-transform:translateY(-1px);
-
-box-shadow:0 6px 16px rgba(0,0,0,.16);
-
 }
 
 .translate-widget .goog-te-gadget{
@@ -325,41 +289,6 @@ font-weight:600;
 
 }
 
-.google-translate-widget{
-
-position:absolute;
-
-width:1px;
-
-height:1px;
-
-opacity:0;
-
-pointer-events:none;
-
-overflow:hidden;
-
-}
-
-/* Hide Google Translate banner so it doesn't cover the page */
-html,
-body {
-	top: 0 !important;
-}
-
-.skiptranslate,
-.goog-te-banner-frame,
-.goog-te-banner-frame.skiptranslate {
-	display: none !important;
-	visibility: hidden !important;
-	height: 0 !important;
-	overflow: hidden !important;
-}
-
-body > .skiptranslate,
-body > .goog-te-banner-frame {
-	display: none !important;
-}
 
 /* Hamburger */
 
@@ -1756,4 +1685,32 @@ opacity:0;
 
 }
 
+}
+/* 1. Hide the modern Google Translate top iframe header */
+.VIpgJd-ZVi9od-ORHb-OEVmcd, 
+.VIpgJd-ZVi9od-l4eHX-hSRGPd, 
+.VIpgJd-yAWNEb-L7lbkb, 
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc,
+iframe.goog-te-banner-frame {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}
+
+/* 2. Prevent Google from pushing your layout down with extra whitespace */
+body {
+    top: 0px !important;
+    position: static !important;
+}
+
+/* 3. Optional: Hide the popup tooltip that appears when hovering over translated text */
+#goog-gt-tt, 
+.goog-tooltip, 
+.goog-tooltip:hover {
+    display: none !important;
+    visibility: hidden !important;
+}
+.goog-text-highlight {
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
