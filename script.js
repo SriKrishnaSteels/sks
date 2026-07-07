@@ -224,3 +224,17 @@ function googleTranslateElementInit() {
         autoDisplay: false
     }, 'google_translate_element');
 }
+// script.js
+import { auth, db } from "./firebase-config.js"; 
+import { onAuthStateChanged } from "firebase/auth";
+
+// Track login state to update your UI
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User is signed in.");
+    // Example: Show a "Logout" button, hide "Login" button
+  } else {
+    console.log("No user signed in.");
+    // Example: Show "Login" button, hide "Write Data" forms
+  }
+});
