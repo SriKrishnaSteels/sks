@@ -246,9 +246,9 @@ font-family:"Poppins",sans-serif !important;
 
 .translate-widget .goog-te-gadget-simple{
 
-background:rgba(255,255,255,.14);
+background:#ffffff;
 
-border:1px solid rgba(255,255,255,.25);
+border:1px solid #d8e3ef;
 
 border-radius:999px;
 
@@ -257,7 +257,9 @@ padding:8px 12px;
 
 align-items:center;
 
-color:white;
+color:#003B73;
+
+box-shadow:0 4px 12px rgba(0,0,0,.12);
 
 transition:.3s;
 
@@ -265,13 +267,19 @@ transition:.3s;
 
 .translate-widget .goog-te-gadget-simple:hover{
 
-background:rgba(255,255,255,.22);
+background:#f6faff;
+
+transform:translateY(-1px);
+
+box-shadow:0 6px 16px rgba(0,0,0,.16);
 
 }
 
 .translate-widget .goog-te-gadget-simple .goog-te-menu-value span{
 
-color:white !important;
+color:#003B73 !important;
+
+font-weight:600;
 
 }
 
