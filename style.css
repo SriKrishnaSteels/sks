@@ -1714,3 +1714,23 @@ body {
     background-color: transparent !important;
     box-shadow: none !important;
 }
+/* Deep-hide the element container and any broken inner button nodes */
+#google_translate_element,
+#google_translate_element *,
+.goog-te-gadget,
+.goog-te-gadget * {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+}
+
+/* Force hidden text nodes and structural anchors inside Google's inline layout wrapper */
+.goog-te-gadget-simple,
+.goog-te-menu-value,
+.goog-te-menu-value span {
+    display: none !important;
+}
