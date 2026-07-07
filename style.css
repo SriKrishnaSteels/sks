@@ -236,6 +236,42 @@ margin-left:12px;
 
 align-items:center;
 
+gap:8px;
+
+}
+
+.translate-toggle{
+
+background:#ffffff;
+
+border:1px solid #d8e3ef;
+
+border-radius:999px;
+
+padding:8px 14px;
+
+color:#003B73;
+
+font-weight:600;
+
+font-family:"Poppins",sans-serif;
+
+cursor:pointer;
+
+box-shadow:0 4px 12px rgba(0,0,0,.12);
+
+transition:.3s;
+
+}
+
+.translate-toggle:hover{
+
+background:#f6faff;
+
+transform:translateY(-1px);
+
+box-shadow:0 6px 16px rgba(0,0,0,.16);
+
 }
 
 .translate-widget .goog-te-gadget{
@@ -286,6 +322,22 @@ font-weight:600;
 .translate-widget .goog-te-gadget-simple img,
 .translate-widget .goog-te-gadget-icon{
 	display:none;
+
+}
+
+.google-translate-widget{
+
+position:absolute;
+
+width:1px;
+
+height:1px;
+
+opacity:0;
+
+pointer-events:none;
+
+overflow:hidden;
 
 }
 
