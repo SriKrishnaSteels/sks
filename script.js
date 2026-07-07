@@ -219,8 +219,8 @@ console.log("Sri Krishna Steels Loaded Successfully!");
 // =============== GTRANSLATE ========================
 function googleTranslateElementInit() {
     new google.translate.TranslateElement({
-        pageLanguage: 'en', // change to your source language if different
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false // <--- This prevents the automatic top banner from triggering
+        pageLanguage: 'en', 
+        // Removing InlineLayout.SIMPLE prevents the broken "Translate" button markup generation
+        autoDisplay: false
     }, 'google_translate_element');
 }
