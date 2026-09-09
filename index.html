@@ -436,18 +436,145 @@ Friendly assistance before and after every purchase.
     loadPublicItems();
 </script>
 
+<!-- ================= VENDORS ================= -->
+<!-- This section was linked from the navbar (#vendors) but didn't exist yet -->
+
+<section class="vendors" id="vendors">
+
+    <div class="section-title">
+        <h2>Our Vendors</h2>
+        <p>We partner with trusted, certified brands across steel, cement and hardware.</p>
+    </div>
+
+    <div class="gallery">
+
+        <div class="gallery-item">
+            <img src="https://placehold.co/400x320?text=Vendor+1" alt="Vendor partner logo" loading="lazy">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://placehold.co/400x320?text=Vendor+2" alt="Vendor partner logo" loading="lazy">
+        </div>
+
+        <div class="gallery-item">
+            <img src="https://placehold.co/400x320?text=Vendor+3" alt="Vendor partner logo" loading="lazy">
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= CONTACT ================= -->
+<!-- This section was linked from the navbar (#contact) but didn't exist yet -->
+
+<section class="contact" id="contact">
+
+    <div class="section-title">
+        <h2>Contact Us</h2>
+        <p>Reach out for quotes, bulk orders or delivery enquiries.</p>
+    </div>
+
+    <div class="contact-container">
+
+        <div class="contact-info">
+
+            <h3>Get in Touch</h3>
+
+            <p>Address: [Add your store address], Tamil Nadu, India</p>
+            <p>Phone: [Add your phone number]</p>
+            <p>Email: [Add your email address]</p>
+            <p>Hours: Mon-Sat, 9:00 AM - 7:00 PM</p>
+
+        </div>
+
+        <div class="contact-form">
+
+            <form>
+
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="tel" name="phone" placeholder="Your Phone Number">
+                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+
+                <button type="submit" class="primary-btn">Send Message</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= LOCATION ================= -->
+
+<section class="location">
+
+    <div class="map-container">
+        <!-- Replace this query with your exact business address for an accurate pin -->
+        <iframe
+            src="https://www.google.com/maps?q=Sri+Krishna+Steels,+Tamil+Nadu&output=embed"
+            width="100%" height="400" loading="lazy" allowfullscreen
+            title="Sri Krishna Steels location map">
+        </iframe>
+    </div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div class="footer-logo">
+            <img src="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png" alt="Sri Krishna Steels Logo">
+            <h2>Sri Krishna Steels</h2>
+            <p>Your trusted partner for premium steel, cement and construction materials.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#products">Products</a>
+            <a href="#vendors">Vendors</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <div class="footer-products">
+            <h3>Our Products</h3>
+            <p>TMT Bars & Structural Steel</p>
+            <p>Cement</p>
+            <p>Paints</p>
+            <p>Hardware & Tools</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Sri Krishna Steels. All rights reserved.</p>
+    </div>
+
+</footer>
+
+<button id="topBtn" type="button" aria-label="Back to top">&uarr;</button>
+
 <!-- ================= GOOGLE TRANSLATE SCRIPT ================= -->
+<!-- googleTranslateElementInit must stay a global function (not inside script.js's module)
+     because Google's translate script looks for it on `window` via the `cb=` callback param. -->
 <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement(
-            { pageLanguage: "en" },
+            { pageLanguage: "en", autoDisplay: false },
             "google_translate_element"
         );
     }
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<script src="script.js" defer></script>
+<!-- script.js uses `import`, so it must be loaded as a module -->
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
