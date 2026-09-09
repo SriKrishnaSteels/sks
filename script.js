@@ -1,243 +1,157 @@
 // ===========================================
-// SRI KRISHNA STEELS 
+// SRI KRISHNA STEELS
 // script.js
+//
+// NOTE: This file uses ES module `import` statements, so it must be
+// loaded from HTML as <script type="module" src="script.js"></script>
+// (not a plain <script src="..."> tag) or every line below silently
+// fails to run.
 // ===========================================
+
+import { auth } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
 // ================= NAVBAR SCROLL =================
 
-
 const navbar = document.querySelector(".navbar");
 
-window.addEventListener("scroll", () => {
-
-    if(window.scrollY > 50){
-
-        navbar.classList.add("scrolled");
-
-    }
-
-    else{
-
-        navbar.classList.remove("scrolled");
-
-    }
-
-});
+if (navbar) {
+    window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 50);
+    });
+}
 
 // ================= MOBILE MENU =================
 
 const hamburger = document.querySelector(".hamburger");
-
 const navLinks = document.querySelector(".nav-links");
 
-hamburger.addEventListener("click", () => {
+if (hamburger && navLinks) {
 
-    hamburger.classList.toggle("active");
-
-    navLinks.classList.toggle("active");
-
-});
-
-// Close menu after clicking a link
-
-document.querySelectorAll(".nav-links a").forEach(link => {
-
-    link.addEventListener("click", () => {
-
-        hamburger.classList.remove("active");
-
-        navLinks.classList.remove("active");
-
+    hamburger.addEventListener("click", () => {
+        const isOpen = hamburger.classList.toggle("active");
+        navLinks.classList.toggle("active");
+        hamburger.setAttribute("aria-expanded", String(isOpen));
     });
 
-});
+    // Close menu after clicking a link
+    navLinks.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            navLinks.classList.remove("active");
+            hamburger.setAttribute("aria-expanded", "false");
+        });
+    });
+}
 
 // ================= BACK TO TOP =================
 
 const topBtn = document.getElementById("topBtn");
 
-window.addEventListener("scroll", () => {
+if (topBtn) {
 
-    if(window.scrollY > 500){
-
-        topBtn.style.display = "block";
-
-    }
-
-    else{
-
-        topBtn.style.display = "none";
-
-    }
-
-});
-
-topBtn.addEventListener("click", () => {
-
-    window.scrollTo({
-
-        top:0,
-
-        behavior:"smooth"
-
+    window.addEventListener("scroll", () => {
+        topBtn.style.display = window.scrollY > 500 ? "block" : "none";
     });
 
-});
+    topBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+}
 
 // ================= SCROLL ANIMATION =================
 
-const observer = new IntersectionObserver((entries)=>{
-
-    entries.forEach(entry=>{
-
-        if(entry.isIntersecting){
-
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
             entry.target.classList.add("show");
-
         }
-
     });
-
-},{
-
-    threshold:0.15
-
-});
+}, { threshold: 0.15 });
 
 document.querySelectorAll(
-
-".card, .feature-card, .gallery-item, .testimonial-card, .stat-card"
-
-).forEach(el=>{
-
+    ".card, .feature-card, .gallery-item, .testimonial-card, .stat-card"
+).forEach(el => {
     el.classList.add("hidden");
-
     observer.observe(el);
-
 });
 
 // ================= SMOOTH SCROLL =================
 
-document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
-
-    anchor.addEventListener("click",function(e){
-
-        e.preventDefault();
-
-        const target=document.querySelector(this.getAttribute("href"));
-
-        if(target){
-
-            target.scrollIntoView({
-
-                behavior:"smooth"
-
-            });
-
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function (e) {
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: "smooth" });
         }
-
+        // If the target section doesn't exist, let the browser follow
+        // the link normally instead of doing nothing.
     });
-
 });
 
 // ================= CONTACT FORM =================
 
-const form=document.querySelector("form");
+const contactForm = document.querySelector(".contact-form form");
 
-if(form){
-
-form.addEventListener("submit",(e)=>{
-
-e.preventDefault();
-
-alert("Thank you! Your message has been received.");
-
-form.reset();
-
-});
-
+if (contactForm) {
+    contactForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Thank you! Your message has been received.");
+        contactForm.reset();
+    });
 }
 
 // ================= HERO PARALLAX =================
 
-const hero=document.querySelector(".hero");
+const hero = document.querySelector(".hero");
 
-window.addEventListener("scroll",()=>{
-
-let offset=window.pageYOffset;
-
-if(hero){
-
-hero.style.backgroundPositionY=offset*0.45+"px";
-
+if (hero) {
+    window.addEventListener("scroll", () => {
+        const offset = window.pageYOffset;
+        hero.style.backgroundPositionY = `${offset * 0.45}px`;
+    });
 }
-
-});
 
 // ================= BUTTON RIPPLE =================
 
-document.querySelectorAll(".primary-btn").forEach(button=>{
+document.querySelectorAll(".primary-btn").forEach(button => {
+    button.addEventListener("click", function (e) {
+        const circle = document.createElement("span");
+        const diameter = Math.max(this.clientWidth, this.clientHeight);
+        const radius = diameter / 2;
 
-button.addEventListener("click",function(e){
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - this.getBoundingClientRect().left - radius}px`;
+        circle.style.top = `${e.clientY - this.getBoundingClientRect().top - radius}px`;
+        circle.classList.add("ripple");
 
-const circle=document.createElement("span");
+        const existingRipple = this.querySelector(".ripple");
+        if (existingRipple) {
+            existingRipple.remove();
+        }
 
-const diameter=Math.max(this.clientWidth,this.clientHeight);
-
-const radius=diameter/2;
-
-circle.style.width=circle.style.height=`${diameter}px`;
-
-circle.style.left=`${e.clientX-this.getBoundingClientRect().left-radius}px`;
-
-circle.style.top=`${e.clientY-this.getBoundingClientRect().top-radius}px`;
-
-circle.classList.add("ripple");
-
-const ripple=this.getElementsByClassName("ripple")[0];
-
-if(ripple){
-
-ripple.remove();
-
-}
-
-this.appendChild(circle);
-
-});
-
+        this.appendChild(circle);
+    });
 });
 
 // ================= PAGE LOADED =================
 
-window.addEventListener("load",()=>{
-
-document.body.classList.add("loaded");
-
+window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
 });
 
 console.log("Sri Krishna Steels Loaded Successfully!");
-// =============== GTRANSLATE ========================
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'en', 
-        // Removing InlineLayout.SIMPLE prevents the broken "Translate" button markup generation
-        autoDisplay: false
-    }, 'google_translate_element');
-}
 
 // ================= FIREBASE AUTH CHECK =================
-import { auth, db } from "./firebase-config.js"; 
-// FIXED: Changed bare import to the CDN web URL matching your config version
-import { onAuthStateChanged } from "https://gstatic.com";
+// firebase-config.js must export `auth` (in addition to `db`) for this to work.
 
-// Track login state to update your UI
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("User is signed in.");
-    // Example: Show a "Logout" button, hide "Login" button
-  } else {
-    console.log("No user signed in.");
-    // Example: Show "Login" button, hide "Write Data" forms
-  }
+    if (user) {
+        console.log("User is signed in.");
+        // Example: Show a "Logout" button, hide "Login" button
+    } else {
+        console.log("No user signed in.");
+        // Example: Show "Login" button, hide "Write Data" forms
+    }
 });
