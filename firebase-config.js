@@ -19,10 +19,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Some networks/firewalls block Firestore's default streaming connection,
-// causing writes to hang forever. This forces long-polling unconditionally,
-// which is slightly slower to initialize but works on any network.
+// causing writes to hang forever. Auto-detect long-polling only switches to
+// the slower fallback when it's actually needed, instead of forcing every
+// visitor onto it (which `experimentalForceLongPolling` did).
 export const db = initializeFirestore(app, {
-  experimentalForceLongPolling: true
+  experimentalAutoDetectLongPolling: true
 });
 
 export const auth = getAuth(app);
