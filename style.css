@@ -302,6 +302,12 @@ gap:6px;
 
 cursor:pointer;
 
+background:none;
+
+border:none;
+
+padding:0;
+
 }
 
 .hamburger span{
@@ -423,6 +429,14 @@ color:#111;
 font-weight:700;
 
 transition:.35s;
+
+border:none;
+
+font-family:"Poppins",sans-serif;
+
+font-size:1rem;
+
+cursor:pointer;
 
 }
 
@@ -779,6 +793,8 @@ box-shadow:var(--shadow);
 
 transition:.4s;
 
+position:relative;
+
 }
 
 .card:hover{
@@ -877,12 +893,6 @@ transition:.4s;
 
 }
 
-.card{
-
-position:relative;
-
-}
-
 .card:hover::before{
 
 transform:scaleX(1);
@@ -904,12 +914,6 @@ transition:.3s;
 /* ==========================================
    BUTTON ANIMATION
 ========================================== */
-
-.primary-btn{
-
-transition:.35s ease;
-
-}
 
 .primary-btn:hover{
 
