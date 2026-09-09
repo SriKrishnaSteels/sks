@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!-- shop/index -->
 <head>
 
     <meta charset="UTF-8">
@@ -100,6 +100,26 @@
     import { db } from "../firebase-config.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
+    function createProductCard(item) {
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        const name = document.createElement("h4");
+        name.textContent = item.name ?? "Unnamed product";
+
+        const price = document.createElement("div");
+        price.className = "price";
+        price.textContent = `₹${item.price ?? "N/A"}`;
+
+        const stock = document.createElement("div");
+        stock.className = "stock";
+        const stockCount = Number(item.stock) || 0;
+        stock.textContent = stockCount > 0 ? `In stock: ${stockCount}` : "Out of stock";
+
+        card.append(name, price, stock);
+        return card;
+    }
+
     async function loadProducts() {
         const listDiv = document.getElementById("productList");
         try {
@@ -112,15 +132,7 @@
 
             listDiv.innerHTML = "";
             snapshot.forEach((docSnap) => {
-                const item = docSnap.data();
-                const card = document.createElement("div");
-                card.className = "product-card";
-                card.innerHTML = `
-                    <h4>${item.name}</h4>
-                    <div class="price">₹${item.price}</div>
-                    <div class="stock">${item.stock > 0 ? "In stock: " + item.stock : "Out of stock"}</div>
-                `;
-                listDiv.appendChild(card);
+                listDiv.appendChild(createProductCard(docSnap.data()));
             });
         } catch (err) {
             listDiv.innerHTML = "<p>Unable to load products right now. Please try again later.</p>";
