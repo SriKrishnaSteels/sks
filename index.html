@@ -18,7 +18,7 @@
 
     <meta name="theme-color" content="#003B73">
 
-    <meta name="robot" content="index, follow">
+    <meta name="robots" content="index, follow">
 
     <link rel="icon" href="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png">
 
@@ -42,7 +42,7 @@
         <img src="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png"
      alt="Sri Krishna Steels Logo"
      loading="eager">
-      
+
         <span>Sri Krishna Steels</span>
 
     </a>
@@ -69,17 +69,17 @@
     </a>
 
     <div class="translate-widget">
-     
+
         <div id="google_translate_element" class="google-translate-widget"></div>
     </div>
 
-    <div class="hamburger">
+    <button class="hamburger" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
 
         <span></span>
         <span></span>
         <span></span>
 
-    </div>
+    </button>
 
 </nav>
 
@@ -177,7 +177,8 @@
 <div class="about-image">
 
 <img src="https://i.ibb.co/3YjVnnwv/Screenshot-2026-07-06-174318.png"
-     alt="Sri Krishna Steels Warehouse">
+     alt="Sri Krishna Steels Warehouse"
+     loading="lazy">
 
 </div>
 
@@ -298,7 +299,8 @@ Friendly assistance before and after every purchase.
         <div class="card">
 
             <img src="https://www.morecambemetals.co.uk/wp-content/uploads/2018/03/stainless-steel.jpg"
-                 alt="Premium Steel Products">
+                 alt="Premium Steel Products"
+                 loading="lazy">
 
             <div class="card-content">
 
@@ -319,8 +321,9 @@ Friendly assistance before and after every purchase.
 
         <div class="card">
 
-            <img src="https://s7ap1.scene7.com/is/image/TslDXP/cement-the-foundation-of-modern-construction?fmt=webp-alpha
-                 alt="Premium Cement">
+            <img src="https://s7ap1.scene7.com/is/image/TslDXP/cement-the-foundation-of-modern-construction?fmt=webp-alpha"
+                 alt="Premium Cement"
+                 loading="lazy">
 
             <div class="card-content">
 
@@ -341,7 +344,8 @@ Friendly assistance before and after every purchase.
         <div class="card">
 
             <img src="https://i0.wp.com/movingtips.wpengine.com/wp-content/uploads/2021/04/concrete-paint.jpg?fit=400%2C683&ssl=1"
-                 alt="Paints">
+                 alt="Paints"
+                 loading="lazy">
 
             <div class="card-content">
 
@@ -389,39 +393,61 @@ Friendly assistance before and after every purchase.
     import { db } from "./firebase-config.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
+    function createProductCard(item) {
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        const name = document.createElement("h4");
+        name.textContent = item.name ?? "Unnamed product";
+
+        const price = document.createElement("div");
+        price.className = "price";
+        price.textContent = `₹${item.price ?? "N/A"}`;
+
+        const stock = document.createElement("div");
+        stock.className = "stock";
+        const stockCount = Number(item.stock) || 0;
+        stock.textContent = stockCount > 0 ? `In stock: ${stockCount}` : "Out of stock";
+
+        card.append(name, price, stock);
+        return card;
+    }
+
     async function loadPublicItems() {
         const listDiv = document.getElementById("productList");
         try {
             const snapshot = await getDocs(collection(db, "items"));
 
             if (snapshot.empty) {
-                listDiv.innerHTML = "<p>No products available right now.</p>";
+                listDiv.textContent = "No products available right now.";
                 return;
             }
 
             listDiv.innerHTML = "";
             snapshot.forEach((docSnap) => {
-                const item = docSnap.data();
-                const card = document.createElement("div");
-                card.className = "product-card";
-                card.innerHTML = `
-                    <h4>${item.name}</h4>
-                    <div class="price">₹${item.price}</div>
-                    <div class="stock">${item.stock > 0 ? "In stock: " + item.stock : "Out of stock"}</div>
-                `;
-                listDiv.appendChild(card);
+                listDiv.appendChild(createProductCard(docSnap.data()));
             });
         } catch (err) {
             console.error("Error loading products:", err);
-            listDiv.innerHTML = "<p>Failed to load products. Please try again later.</p>";
+            listDiv.textContent = "Failed to load products. Please try again later.";
         }
     }
 
-    // Call the function to load products on page load
     loadPublicItems();
 </script>
 
 <!-- ================= GOOGLE TRANSLATE SCRIPT ================= -->
-<script src="https://google.com"></script>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            { pageLanguage: "en" },
+            "google_translate_element"
+        );
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script src="script.js" defer></script>
+
 </body>
 </html>
