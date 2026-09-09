@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>Admin Dashboard - Sri Krishna Steels</title>
 <style>
   body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 24px; }
@@ -10,6 +12,7 @@
   h2 { color: #222; margin: 0; }
   button { padding: 8px 14px; background: #b23b3b; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
   button:hover { background: #922f2f; }
+  button:disabled { opacity: 0.7; cursor: not-allowed; }
   .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
   input { width: 100%; padding: 8px; margin: 6px 0; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
   label { font-size: 13px; color: #555; }
@@ -35,16 +38,18 @@
 
   <div class="card">
     <h3 id="formTitle">Add New Item</h3>
-    <input type="hidden" id="itemId">
-    <label>Item Name</label>
-    <input type="text" id="itemName" placeholder="e.g. MS Angle 40x40x5mm">
-    <label>Price (₹)</label>
-    <input type="number" id="itemPrice" placeholder="e.g. 850">
-    <label>Stock Quantity</label>
-    <input type="number" id="itemStock" placeholder="e.g. 120">
-    <button id="saveBtn">Save Item</button>
-    <button id="cancelEditBtn" style="background:#999; display:none;">Cancel Edit</button>
-    <div id="formMsg"></div>
+    <form id="itemForm">
+      <input type="hidden" id="itemId">
+      <label>Item Name</label>
+      <input type="text" id="itemName" placeholder="e.g. MS Angle 40x40x5mm" required>
+      <label>Price (₹)</label>
+      <input type="number" id="itemPrice" placeholder="e.g. 850" min="0" step="0.01" required>
+      <label>Stock Quantity</label>
+      <input type="number" id="itemStock" placeholder="e.g. 120" min="0" step="1">
+      <button type="submit" id="saveBtn">Save Item</button>
+      <button type="button" id="cancelEditBtn" style="background:#999; display:none;">Cancel Edit</button>
+      <div id="formMsg"></div>
+    </form>
   </div>
 
   <div class="card">
@@ -59,40 +64,6 @@
   import {
     collection, addDoc, getDocs, doc, updateDoc, deleteDoc
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-
-  // TEMPORARY DEBUG EXPOSURE - remove after troubleshooting
-  window.debugDb = db;
-  window.debugAuth = auth;
-  window.debugAddDoc = addDoc;
-  window.debugCollection = collection;
-
-  // REST API test - bypasses Firestore SDK's WebChannel transport entirely
-  window.debugRestTest = async function() {
-    const token = await auth.currentUser.getIdToken();
-    const projectId = "sri-krishna-steels-c1ce6";
-    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/items`;
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + token,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          fields: {
-            name: { stringValue: "REST Test" },
-            price: { integerValue: "1" },
-            stock: { integerValue: "1" }
-          }
-        })
-      });
-      const data = await res.json();
-      console.log("REST STATUS:", res.status);
-      console.log("REST RESPONSE:", data);
-    } catch (err) {
-      console.log("REST FETCH FAILED:", err.message);
-    }
-  };
 
   const itemsRef = collection(db, "items");
 
@@ -111,46 +82,85 @@
     signOut(auth).then(() => window.location.href = "admin-login.html");
   });
 
+  // --- Build a single item row safely (no innerHTML with untrusted data) ---
+  function createItemRow(id, item) {
+    const row = document.createElement("div");
+    row.className = "item-row";
+
+    const info = document.createElement("div");
+    info.className = "item-info";
+
+    const nameEl = document.createElement("strong");
+    nameEl.textContent = item.name ?? "Unnamed item";
+
+    info.append(
+      nameEl,
+      document.createTextNode(` — ₹${item.price ?? "N/A"} — Stock: ${item.stock ?? 0}`)
+    );
+
+    const actions = document.createElement("div");
+    actions.className = "item-actions";
+
+    const editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.className = "edit-btn";
+    editBtn.textContent = "Edit";
+    editBtn.addEventListener("click", () => startEdit(id, item));
+
+    const delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "del-btn";
+    delBtn.textContent = "Delete";
+    delBtn.addEventListener("click", () => deleteItem(id));
+
+    actions.append(editBtn, delBtn);
+    row.append(info, actions);
+    return row;
+  }
+
   // --- Load and display items ---
   async function loadItems() {
     const listDiv = document.getElementById("itemList");
-    listDiv.innerHTML = "Loading items...";
-    const snapshot = await getDocs(itemsRef);
+    listDiv.textContent = "Loading items...";
 
-    if (snapshot.empty) {
-      listDiv.innerHTML = "<p>No items yet. Add one above.</p>";
-      return;
+    try {
+      const snapshot = await getDocs(itemsRef);
+
+      if (snapshot.empty) {
+        listDiv.innerHTML = "<p>No items yet. Add one above.</p>";
+        return;
+      }
+
+      listDiv.innerHTML = "";
+      snapshot.forEach((docSnap) => {
+        listDiv.appendChild(createItemRow(docSnap.id, docSnap.data()));
+      });
+    } catch (err) {
+      console.error("Error loading items:", err);
+      listDiv.innerHTML = "<p>Failed to load items. Please try again.</p>";
     }
-
-    listDiv.innerHTML = "";
-    snapshot.forEach((docSnap) => {
-      const item = docSnap.data();
-      const row = document.createElement("div");
-      row.className = "item-row";
-      row.innerHTML = `
-        <div class="item-info"><strong>${item.name}</strong> — ₹${item.price} — Stock: ${item.stock}</div>
-        <div class="item-actions">
-          <button class="edit-btn">Edit</button>
-          <button class="del-btn">Delete</button>
-        </div>
-      `;
-      row.querySelector(".edit-btn").addEventListener("click", () => startEdit(docSnap.id, item));
-      row.querySelector(".del-btn").addEventListener("click", () => deleteItem(docSnap.id));
-      listDiv.appendChild(row);
-    });
   }
 
   // --- Save (add or update) ---
-  document.getElementById("saveBtn").addEventListener("click", async () => {
+  document.getElementById("itemForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
     const id = document.getElementById("itemId").value;
     const name = document.getElementById("itemName").value.trim();
     const price = Number(document.getElementById("itemPrice").value);
-    const stock = Number(document.getElementById("itemStock").value);
+    const stockInput = document.getElementById("itemStock").value;
+    const stock = stockInput === "" ? 0 : Number(stockInput);
     const msg = document.getElementById("formMsg");
     const saveBtn = document.getElementById("saveBtn");
 
-    if (!name || !price) {
-      msg.textContent = "Please enter at least a name and price.";
+    if (!name || !Number.isFinite(price) || price < 0) {
+      msg.textContent = "Please enter a valid name and price.";
+      msg.style.color = "red";
+      return;
+    }
+
+    if (!Number.isFinite(stock) || stock < 0) {
+      msg.textContent = "Stock quantity must be a valid number.";
       msg.style.color = "red";
       return;
     }
@@ -158,7 +168,6 @@
     const originalText = saveBtn.textContent;
     saveBtn.disabled = true;
     saveBtn.textContent = "Saving...";
-    saveBtn.style.opacity = "0.7";
     msg.textContent = "";
 
     try {
@@ -179,16 +188,15 @@
     } finally {
       saveBtn.disabled = false;
       saveBtn.textContent = originalText;
-      saveBtn.style.opacity = "1";
     }
   });
 
   function startEdit(id, item) {
     document.getElementById("formTitle").textContent = "Edit Item";
     document.getElementById("itemId").value = id;
-    document.getElementById("itemName").value = item.name;
-    document.getElementById("itemPrice").value = item.price;
-    document.getElementById("itemStock").value = item.stock;
+    document.getElementById("itemName").value = item.name ?? "";
+    document.getElementById("itemPrice").value = item.price ?? "";
+    document.getElementById("itemStock").value = item.stock ?? "";
     document.getElementById("cancelEditBtn").style.display = "inline-block";
     window.scrollTo(0, 0);
   }
@@ -206,8 +214,13 @@
 
   async function deleteItem(id) {
     if (!confirm("Delete this item?")) return;
-    await deleteDoc(doc(db, "items", id));
-    loadItems();
+    try {
+      await deleteDoc(doc(db, "items", id));
+      loadItems();
+    } catch (err) {
+      console.error("Error deleting item:", err);
+      alert("Failed to delete item. Please try again.");
+    }
   }
 </script>
 
