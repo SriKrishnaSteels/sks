@@ -93,7 +93,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ================= CONTACT FORM =================
 
 // Paste the /exec URL from your Apps Script deployment (Deploy > Manage deployments) here.
-const CONTACT_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwgZDIrCXhcvtGCJSUIeCrlUMFeeiWKTSV4T7xmIPyqKKqL1j3KqmRDPN1Qdv3MZtQB/exec";
+const CONTACT_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbz2NNhIJ5Aq4oDlAZ9QV3ZkV3_Rlq7x4_uB0S8JWPI25dkd4jNdMYBY-XV_DPVjjJEn/exec";
 
 const contactForm = document.getElementById("contactForm");
 
