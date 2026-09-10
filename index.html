@@ -480,7 +480,7 @@ Friendly assistance before and after every purchase.
 
             <h3>Get in Touch</h3>
 
-            <p>Address: Tamil Nadu, India</p>
+            <p>Address: Thirukovilur Road, Sankarapuram, Tamil Nadu 606401, India</p>
             <p>Phone: +91 99444 68655, +91 97918 44139, +91 99944 47110</p>
             <p>Email: <a href="mailto:srikrishnasteels.sks@gmail.com" style="color:inherit;">srikrishnasteels.sks@gmail.com</a></p>
             <p>Hours: Mon-Sat, 9:00 AM - 7:00 PM</p>
@@ -489,7 +489,11 @@ Friendly assistance before and after every purchase.
 
         <div class="contact-form">
 
-            <form>
+            <form id="contactForm">
+
+                <!-- Honeypot field: hidden from real visitors, bots often fill it in anyway -->
+                <input type="text" name="website" id="website" autocomplete="off" tabindex="-1"
+                       style="position:absolute; left:-9999px;" aria-hidden="true">
 
                 <input type="text" name="name" placeholder="Your Name" required>
                 <input type="email" name="email" placeholder="Your Email" required>
@@ -497,6 +501,7 @@ Friendly assistance before and after every purchase.
                 <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
 
                 <button type="submit" class="primary-btn">Send Message</button>
+                <div id="contactFormMsg" style="margin-top:10px; font-size:14px;"></div>
 
             </form>
 
