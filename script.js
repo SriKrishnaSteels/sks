@@ -92,13 +92,70 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // ================= CONTACT FORM =================
 
-const contactForm = document.querySelector(".contact-form form");
+// Paste the /exec URL from your Apps Script deployment (Deploy > Manage deployments) here.
+const CONTACT_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwtihFzDl7z7Vox0r1jf-SO2Rn1ZgVa0PV9JOHe9aUQeDnA9VVJVKEf5PiEaZluKtNE/exec";
+
+const contactForm = document.getElementById("contactForm");
 
 if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
+    contactForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        alert("Thank you! Your message has been received.");
-        contactForm.reset();
+
+        const msgDiv = document.getElementById("contactFormMsg");
+        const submitBtn = contactForm.querySelector("button[type='submit']");
+
+        if (!CONTACT_FORM_ENDPOINT || CONTACT_FORM_ENDPOINT.includes("PASTE_YOUR")) {
+            console.warn("Contact form endpoint isn't set yet — see CONTACT_FORM_ENDPOINT in script.js.");
+            if (msgDiv) {
+                msgDiv.style.color = "red";
+                msgDiv.textContent = "Form isn't connected yet. Please contact us by phone or email instead.";
+            }
+            return;
+        }
+
+        const payload = {
+            website: contactForm.website.value, // honeypot — should stay empty
+            name: contactForm.name.value.trim(),
+            email: contactForm.email.value.trim(),
+            phone: contactForm.phone.value.trim(),
+            message: contactForm.message.value.trim()
+        };
+
+        const originalText = submitBtn ? submitBtn.textContent : "";
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Sending...";
+        }
+        if (msgDiv) msgDiv.textContent = "";
+
+        try {
+            // Content-Type must stay "text/plain" here — it keeps this a "simple request"
+            // so the browser skips a CORS preflight, which Apps Script doesn't handle.
+            const res = await fetch(CONTACT_FORM_ENDPOINT, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+
+            if (msgDiv) {
+                msgDiv.style.color = "green";
+                msgDiv.textContent = "Thank you! Your message has been received.";
+            }
+            contactForm.reset();
+        } catch (err) {
+            console.error("Contact form submission failed:", err);
+            if (msgDiv) {
+                msgDiv.style.color = "red";
+                msgDiv.textContent = "Something went wrong sending your message. Please try again or contact us by phone.";
+            }
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
     });
 }
 
