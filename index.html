@@ -389,20 +389,48 @@ Friendly assistance before and after every purchase.
     .product-card .stock { font-size: 13px; color: #777; margin-top: 4px; }
 </style>
 
-<script type="module">
-    import { db } from "./firebase-config.js";
-    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+<script type="text/javascript">
+    // Inventory comes from a published Google Sheet (no Firebase needed).
+    // Sheet columns expected: Name, Price, Stock
+    const SHOP_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTqAWy8m9Q3JcgJN_WY7gYUhVHHIQnccDnUjjPPAnBxLjG8RrHmQJIYgN_FAZjJfkpYkyhiEs_McCp5/pub?gid=0&single=true&output=csv";
+
+    function parseCSV(text) {
+        const rows = [];
+        const lines = text.replace(/\r/g, "").split("\n").filter(line => line.length > 0);
+
+        for (const line of lines) {
+            const cells = [];
+            let current = "";
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (inQuotes) {
+                    if (ch === '"' && line[i + 1] === '"') { current += '"'; i++; }
+                    else if (ch === '"') { inQuotes = false; }
+                    else { current += ch; }
+                } else {
+                    if (ch === '"') inQuotes = true;
+                    else if (ch === ",") { cells.push(current); current = ""; }
+                    else current += ch;
+                }
+            }
+            cells.push(current);
+            rows.push(cells);
+        }
+        return rows;
+    }
 
     function createProductCard(item) {
         const card = document.createElement("div");
         card.className = "product-card";
 
         const name = document.createElement("h4");
-        name.textContent = item.name ?? "Unnamed product";
+        name.textContent = item.name || "Unnamed product";
 
         const price = document.createElement("div");
         price.className = "price";
-        price.textContent = `₹${item.price ?? "N/A"}`;
+        price.textContent = `₹${item.price || "N/A"}`;
 
         const stock = document.createElement("div");
         stock.className = "stock";
@@ -416,17 +444,26 @@ Friendly assistance before and after every purchase.
     async function loadPublicItems() {
         const listDiv = document.getElementById("productList");
         try {
-            const snapshot = await getDocs(collection(db, "items"));
+            const res = await fetch(SHOP_SHEET_CSV_URL);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-            if (snapshot.empty) {
+            const rows = parseCSV(await res.text());
+            const header = rows[0].map(h => h.trim().toLowerCase());
+            const nameIdx = header.indexOf("name");
+            const priceIdx = header.indexOf("price");
+            const stockIdx = header.indexOf("stock");
+
+            const items = rows.slice(1)
+                .filter(r => r[nameIdx] && r[nameIdx].trim() !== "")
+                .map(r => ({ name: r[nameIdx], price: r[priceIdx], stock: r[stockIdx] }));
+
+            if (items.length === 0) {
                 listDiv.textContent = "No products available right now.";
                 return;
             }
 
             listDiv.innerHTML = "";
-            snapshot.forEach((docSnap) => {
-                listDiv.appendChild(createProductCard(docSnap.data()));
-            });
+            items.forEach(item => listDiv.appendChild(createProductCard(item)));
         } catch (err) {
             console.error("Error loading products:", err);
             listDiv.textContent = "Failed to load products. Please try again later.";
@@ -579,17 +616,25 @@ Friendly assistance before and after every purchase.
 </a>
 
 <!-- ================= GOOGLE TRANSLATE SCRIPT ================= -->
+<!-- Default new visitors to Tamil since that's our primary audience. If a visitor has already
+     picked a language before (including switching back to English), this leaves their choice alone. -->
+<script type="text/javascript">
+    if (!document.cookie.includes("googtrans")) {
+        document.cookie = "googtrans=/en/ta;path=/";
+    }
+</script>
 <!-- googleTranslateElementInit must stay a global function (not inside script.js's module)
      because Google's translate script looks for it on `window` via the `cb=` callback param. -->
 <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement(
-            { pageLanguage: "en", autoDisplay: false },
+            { pageLanguage: "en", includedLanguages: "en,ta", autoDisplay: false },
             "google_translate_element"
         );
     }
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 
 <!-- script.js uses `import`, so it must be loaded as a module -->
 <script type="module" src="script.js"></script>
