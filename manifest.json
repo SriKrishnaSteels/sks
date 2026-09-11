@@ -1,0 +1,23 @@
+{
+  "name": "Sri Krishna Steels",
+  "short_name": "SKS Steels",
+  "description": "Premium Steel, Cement, Hardware & Construction Materials.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#003B73",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
