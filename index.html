@@ -59,6 +59,14 @@
     }
     </script>
 
+    <!-- ================= PWA / INSTALLABLE APP SETUP ================= -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SKS Steels">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png">
+
 </head>
 
 <body>
@@ -419,6 +427,8 @@ Friendly assistance before and after every purchase.
     .product-card h4 { margin: 0 0 8px; color: #003B73; }
     .product-card .price { color: #b23b3b; font-weight: bold; font-size: 16px; }
     .product-card .stock { font-size: 13px; color: #777; margin-top: 4px; }
+    .product-card .enquire-btn { display: block; text-align: center; margin-top: 10px; padding: 8px; background: #25D366; color: #fff; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600; }
+    .product-card .enquire-btn:hover { background: #1ebe5b; }
 </style>
 
 <script type="text/javascript">
@@ -469,7 +479,15 @@ Friendly assistance before and after every purchase.
         const stockCount = Number(item.stock) || 0;
         stock.textContent = stockCount > 0 ? `In stock: ${stockCount}` : "Out of stock";
 
-        card.append(name, price, stock);
+        const enquireBtn = document.createElement("a");
+        enquireBtn.className = "enquire-btn";
+        enquireBtn.target = "_blank";
+        enquireBtn.rel = "noopener noreferrer";
+        const enquiryText = `Hi, I'm interested in this item: ${item.name || "an item on your site"}`;
+        enquireBtn.href = `https://wa.me/919944468655?text=${encodeURIComponent(enquiryText)}`;
+        enquireBtn.textContent = "Enquire on WhatsApp";
+
+        card.append(name, price, stock, enquireBtn);
         return card;
     }
 
@@ -678,6 +696,17 @@ Friendly assistance before and after every purchase.
 
 <!-- script.js uses `import`, so it must be loaded as a module -->
 <script type="module" src="script.js"></script>
+
+<!-- Registers the service worker so the site can be installed as an app -->
+<script type="text/javascript">
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("./sw.js").catch((err) => {
+                console.error("Service worker registration failed:", err);
+            });
+        });
+    }
+</script>
 
 </body>
 </html>
