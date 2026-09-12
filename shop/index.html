@@ -108,14 +108,32 @@
         .product-card .enquire-btn:hover {
             background: #1ebe5b;
         }
+        .enquiry-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 10px;
+        }
         .enquiry-check {
             display: flex;
             align-items: center;
             gap: 6px;
             font-size: 13px;
             color: #444;
-            margin-top: 10px;
             cursor: pointer;
+        }
+        .enquiry-qty {
+            width: 55px;
+            padding: 4px 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+        }
+        .enquiry-qty:disabled {
+            background: #f2f2f2;
+            color: #aaa;
         }
         .enquiry-bar {
             position: fixed;
@@ -300,19 +318,38 @@
 
         const itemName = item.name || "Unnamed product";
 
+        const checkRow = document.createElement("div");
+        checkRow.className = "enquiry-row";
+
         const checkLabel = document.createElement("label");
         checkLabel.className = "enquiry-check";
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
+
+        const qtyInput = document.createElement("input");
+        qtyInput.type = "number";
+        qtyInput.className = "enquiry-qty";
+        qtyInput.min = "1";
+        qtyInput.value = "1";
+        qtyInput.disabled = true;
+        qtyInput.setAttribute("aria-label", `Quantity for ${itemName}`);
+
         checkbox.addEventListener("change", () => {
+            qtyInput.disabled = !checkbox.checked;
             if (checkbox.checked) {
-                enquiryList.set(itemName, checkbox);
+                enquiryList.set(itemName, { checkbox, qtyInput });
             } else {
                 enquiryList.delete(itemName);
             }
             updateEnquiryBar();
         });
+
+        qtyInput.addEventListener("input", () => {
+            if (qtyInput.value === "" || Number(qtyInput.value) < 1) qtyInput.value = "1";
+        });
+
         checkLabel.append(checkbox, document.createTextNode(" Add to enquiry list"));
+        checkRow.append(checkLabel, qtyInput);
 
         const enquireBtn = document.createElement("a");
         enquireBtn.className = "enquire-btn";
@@ -322,7 +359,7 @@
         enquireBtn.href = `https://wa.me/919944468655?text=${encodeURIComponent(enquiryText)}`;
         enquireBtn.textContent = "Enquire on WhatsApp";
 
-        card.append(img, name, price, stock, checkLabel, enquireBtn);
+        card.append(img, name, price, stock, checkRow, enquireBtn);
         return card;
     }
 
@@ -359,16 +396,22 @@
     loadProducts();
 
     document.getElementById("sendEnquiryBtn").addEventListener("click", () => {
-        const items = Array.from(enquiryList.keys());
-        if (items.length === 0) return;
+        const entries = Array.from(enquiryList.entries());
+        if (entries.length === 0) return;
 
-        const itemLines = items.map((itemName, i) => `${i + 1}. ${itemName}`).join("\n");
+        const itemLines = entries
+            .map(([itemName, refs], i) => `${i + 1}. ${itemName} — Qty: ${refs.qtyInput.value}`)
+            .join("\n");
         const message = `Hi, I'd like to enquire about the following items:\n${itemLines}`;
         window.open(`https://wa.me/919944468655?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     });
 
     document.getElementById("clearEnquiryBtn").addEventListener("click", () => {
-        enquiryList.forEach((checkbox) => { checkbox.checked = false; });
+        enquiryList.forEach(({ checkbox, qtyInput }) => {
+            checkbox.checked = false;
+            qtyInput.disabled = true;
+            qtyInput.value = "1";
+        });
         enquiryList.clear();
         updateEnquiryBar();
     });
