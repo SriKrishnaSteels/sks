@@ -119,30 +119,82 @@
         }
         .enquiry-bar {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #003B73;
+            bottom: 20px;
+            left: 50%;
+            transform: translate(-50%, 140%);
+            opacity: 0;
+            pointer-events: none;
+            width: 92%;
+            max-width: 480px;
+            background: linear-gradient(135deg, #003B73, #005792);
             color: #fff;
-            padding: 14px 5%;
+            padding: 12px 12px 12px 22px;
+            border-radius: 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+            gap: 14px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
             z-index: 1000;
+            transition: transform .35s ease, opacity .35s ease;
         }
-        .enquiry-bar button {
+        .enquiry-bar.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .enquiry-bar .enquiry-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .enquiry-badge {
+            background: #F2B134;
+            color: #111;
+            font-weight: 800;
+            font-size: 13px;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            flex-shrink: 0;
+        }
+        .clear-btn {
+            background: none;
+            border: none;
+            color: #cfe0f0;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0 2px;
+        }
+        .clear-btn:hover {
+            color: #fff;
+        }
+        .send-btn {
             background: #25D366;
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 10px 18px;
+            border-radius: 30px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+            transition: .25s;
         }
-        .enquiry-bar button:hover {
+        .send-btn:hover {
             background: #1ebe5b;
+            transform: translateY(-2px);
         }
     </style>
 
@@ -162,9 +214,18 @@
 
 </section>
 
-<div id="enquiryBar" class="enquiry-bar" style="display:none;">
-    <span><span id="enquiryCount">0</span> item(s) selected</span>
-    <button type="button" id="sendEnquiryBtn">Send Enquiry via WhatsApp</button>
+<div id="enquiryBar" class="enquiry-bar">
+    <div class="enquiry-info">
+        <span class="enquiry-badge" id="enquiryCount">0</span>
+        <span>item(s) selected</span>
+        <button type="button" class="clear-btn" id="clearEnquiryBtn" title="Clear list" aria-label="Clear enquiry list">&times;</button>
+    </div>
+    <button type="button" id="sendEnquiryBtn" class="send-btn">
+        <svg viewBox="0 0 32 32" width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M22.5 9.5a8.9 8.9 0 0 0-14.6 9.9L7 26l6.8-1.8a8.9 8.9 0 0 0 12.6-7.9 8.8 8.8 0 0 0-2.6-6.3l-1.3-1.5zM16 23.6a7.4 7.4 0 0 1-3.8-1l-.3-.2-2.8.8.8-2.7-.2-.3a7.5 7.5 0 1 1 6.3 3.4z" fill="#fff"/>
+        </svg>
+        Send Enquiry
+    </button>
 </div>
 
 <script type="text/javascript">
@@ -199,18 +260,15 @@
         return rows;
     }
 
-    // Tracks which items the customer has checked for a combined enquiry
+    // Tracks which items the customer has checked for a combined enquiry.
+    // Maps item name -> its checkbox element, so "Clear" can uncheck them too.
     const enquiryList = new Map();
 
     function updateEnquiryBar() {
         const bar = document.getElementById("enquiryBar");
         const countSpan = document.getElementById("enquiryCount");
-        if (enquiryList.size === 0) {
-            bar.style.display = "none";
-        } else {
-            bar.style.display = "flex";
-            countSpan.textContent = enquiryList.size;
-        }
+        countSpan.textContent = enquiryList.size;
+        bar.classList.toggle("show", enquiryList.size > 0);
     }
 
     function createProductCard(item) {
@@ -248,7 +306,7 @@
         checkbox.type = "checkbox";
         checkbox.addEventListener("change", () => {
             if (checkbox.checked) {
-                enquiryList.set(itemName, true);
+                enquiryList.set(itemName, checkbox);
             } else {
                 enquiryList.delete(itemName);
             }
@@ -307,6 +365,12 @@
         const itemLines = items.map((itemName, i) => `${i + 1}. ${itemName}`).join("\n");
         const message = `Hi, I'd like to enquire about the following items:\n${itemLines}`;
         window.open(`https://wa.me/919944468655?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    });
+
+    document.getElementById("clearEnquiryBtn").addEventListener("click", () => {
+        enquiryList.forEach((checkbox) => { checkbox.checked = false; });
+        enquiryList.clear();
+        updateEnquiryBar();
     });
 </script>
 
