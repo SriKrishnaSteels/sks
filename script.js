@@ -93,7 +93,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ================= CONTACT FORM =================
 
 // Paste the /exec URL from your Apps Script deployment (Deploy > Manage deployments) here.
-const CONTACT_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxOm8bTYTyGI2IJvC4jQyQf44CdCnZgi8uVYykogbM7ewx5jS7NayqCSqkPwaPr_gxw/exec";
+const CONTACT_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwgZDIrCXhcvtGCJSUIeCrlUMFeeiWKTSV4T7xmIPyqKKqL1j3KqmRDPN1Qdv3MZtQB/exec";
 
 const contactForm = document.getElementById("contactForm");
 
@@ -141,7 +141,25 @@ if (contactForm) {
 
             if (msgDiv) {
                 msgDiv.style.color = "green";
-                msgDiv.textContent = "Thank you! Your message has been received.";
+                msgDiv.innerHTML = "";
+
+                const successText = document.createElement("div");
+                successText.textContent = "Thank you! Your message has been received.";
+
+                const waLink = document.createElement("a");
+                waLink.href = `https://wa.me/919944468655?text=${encodeURIComponent(
+                    `Hi, I just sent a message on your website: "${payload.message}"`
+                )}`;
+                waLink.target = "_blank";
+                waLink.rel = "noopener noreferrer";
+                waLink.textContent = "Continue on WhatsApp →";
+                waLink.style.display = "inline-block";
+                waLink.style.marginTop = "8px";
+                waLink.style.color = "#25D366";
+                waLink.style.fontWeight = "600";
+                waLink.style.textDecoration = "none";
+
+                msgDiv.append(successText, waLink);
             }
             contactForm.reset();
         } catch (err) {
