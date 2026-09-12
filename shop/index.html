@@ -54,7 +54,7 @@
             text-decoration: underline;
         }
         .shop-products {
-            padding: 50px 5%;
+            padding: 50px 5% 90px;
         }
         #productList {
             display: flex;
@@ -108,6 +108,42 @@
         .product-card .enquire-btn:hover {
             background: #1ebe5b;
         }
+        .enquiry-check {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #444;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .enquiry-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #003B73;
+            color: #fff;
+            padding: 14px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .enquiry-bar button {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .enquiry-bar button:hover {
+            background: #1ebe5b;
+        }
     </style>
 
 </head>
@@ -125,6 +161,11 @@
     <div id="productList">Loading products...</div>
 
 </section>
+
+<div id="enquiryBar" class="enquiry-bar" style="display:none;">
+    <span><span id="enquiryCount">0</span> item(s) selected</span>
+    <button type="button" id="sendEnquiryBtn">Send Enquiry via WhatsApp</button>
+</div>
 
 <script type="text/javascript">
     // Inventory comes from a published Google Sheet (no Firebase needed).
@@ -158,6 +199,20 @@
         return rows;
     }
 
+    // Tracks which items the customer has checked for a combined enquiry
+    const enquiryList = new Map();
+
+    function updateEnquiryBar() {
+        const bar = document.getElementById("enquiryBar");
+        const countSpan = document.getElementById("enquiryCount");
+        if (enquiryList.size === 0) {
+            bar.style.display = "none";
+        } else {
+            bar.style.display = "flex";
+            countSpan.textContent = enquiryList.size;
+        }
+    }
+
     function createProductCard(item) {
         const card = document.createElement("div");
         card.className = "product-card";
@@ -185,15 +240,31 @@
         const stockCount = Number(item.stock) || 0;
         stock.textContent = stockCount > 0 ? `In stock: ${stockCount}` : "Out of stock";
 
+        const itemName = item.name || "Unnamed product";
+
+        const checkLabel = document.createElement("label");
+        checkLabel.className = "enquiry-check";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+                enquiryList.set(itemName, true);
+            } else {
+                enquiryList.delete(itemName);
+            }
+            updateEnquiryBar();
+        });
+        checkLabel.append(checkbox, document.createTextNode(" Add to enquiry list"));
+
         const enquireBtn = document.createElement("a");
         enquireBtn.className = "enquire-btn";
         enquireBtn.target = "_blank";
         enquireBtn.rel = "noopener noreferrer";
-        const enquiryText = `Hi, I'm interested in this item: ${item.name || "an item on your site"}`;
+        const enquiryText = `Hi, I'm interested in this item: ${itemName}`;
         enquireBtn.href = `https://wa.me/919944468655?text=${encodeURIComponent(enquiryText)}`;
         enquireBtn.textContent = "Enquire on WhatsApp";
 
-        card.append(img, name, price, stock, enquireBtn);
+        card.append(img, name, price, stock, checkLabel, enquireBtn);
         return card;
     }
 
@@ -228,6 +299,15 @@
     }
 
     loadProducts();
+
+    document.getElementById("sendEnquiryBtn").addEventListener("click", () => {
+        const items = Array.from(enquiryList.keys());
+        if (items.length === 0) return;
+
+        const itemLines = items.map((itemName, i) => `${i + 1}. ${itemName}`).join("\n");
+        const message = `Hi, I'd like to enquire about the following items:\n${itemLines}`;
+        window.open(`https://wa.me/919944468655?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    });
 </script>
 
 <!-- Registers the service worker so the site can be installed as an app -->
