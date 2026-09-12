@@ -214,6 +214,24 @@
             background: #1ebe5b;
             transform: translateY(-2px);
         }
+        .search-wrap {
+            max-width: 480px;
+            margin: 0 auto 30px;
+        }
+        #productSearch {
+            width: 100%;
+            padding: 12px 18px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: .25s;
+        }
+        #productSearch:focus {
+            border-color: #003B73;
+            box-shadow: 0 0 0 3px rgba(0,59,115,0.12);
+        }
     </style>
 
 </head>
@@ -227,6 +245,10 @@
 </div>
 
 <section class="shop-products">
+
+    <div class="search-wrap">
+        <input type="text" id="productSearch" placeholder="Search products..." aria-label="Search products">
+    </div>
 
     <div id="productList">Loading products...</div>
 
@@ -348,6 +370,16 @@
             if (qtyInput.value === "" || Number(qtyInput.value) < 1) qtyInput.value = "1";
         });
 
+        // If this item is already in the enquiry list (e.g. re-rendered after a search),
+        // restore its checked/quantity state and point the list at these fresh elements.
+        const existingEntry = enquiryList.get(itemName);
+        if (existingEntry) {
+            checkbox.checked = true;
+            qtyInput.disabled = false;
+            qtyInput.value = existingEntry.qtyInput.value;
+            enquiryList.set(itemName, { checkbox, qtyInput });
+        }
+
         checkLabel.append(checkbox, document.createTextNode(" Add to enquiry list"));
         checkRow.append(checkLabel, qtyInput);
 
@@ -363,6 +395,18 @@
         return card;
     }
 
+    let allItems = [];
+
+    function renderItems(items, emptyMessage) {
+        const listDiv = document.getElementById("productList");
+        if (items.length === 0) {
+            listDiv.innerHTML = `<p>${emptyMessage}</p>`;
+            return;
+        }
+        listDiv.innerHTML = "";
+        items.forEach(item => listDiv.appendChild(createProductCard(item)));
+    }
+
     async function loadProducts() {
         const listDiv = document.getElementById("productList");
         try {
@@ -376,22 +420,24 @@
             const stockIdx = header.indexOf("stock");
             const imageIdx = header.indexOf("image");
 
-            const items = rows.slice(1)
+            allItems = rows.slice(1)
                 .filter(r => r[nameIdx] && r[nameIdx].trim() !== "")
                 .map(r => ({ name: r[nameIdx], price: r[priceIdx], stock: r[stockIdx], image: imageIdx >= 0 ? r[imageIdx] : "" }));
 
-            if (items.length === 0) {
-                listDiv.innerHTML = "<p>No products available right now. Please check back soon.</p>";
-                return;
-            }
-
-            listDiv.innerHTML = "";
-            items.forEach(item => listDiv.appendChild(createProductCard(item)));
+            renderItems(allItems, "No products available right now. Please check back soon.");
         } catch (err) {
             listDiv.innerHTML = "<p>Unable to load products right now. Please try again later.</p>";
             console.error(err);
         }
     }
+
+    document.getElementById("productSearch").addEventListener("input", (e) => {
+        const term = e.target.value.trim().toLowerCase();
+        const filtered = term === ""
+            ? allItems
+            : allItems.filter(item => (item.name || "").toLowerCase().includes(term));
+        renderItems(filtered, "No items match your search.");
+    });
 
     loadProducts();
 
