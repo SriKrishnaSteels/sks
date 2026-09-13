@@ -1847,3 +1847,101 @@ body {
     background-color: transparent !important;
     box-shadow: none !important;
 }
+
+/* ==========================================
+   DARK MODE TOGGLE BUTTON
+========================================== */
+
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: inherit;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+}
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+body.dark-mode {
+    background: #0f1620;
+    color: #e8edf2;
+}
+
+body.dark-mode .about,
+body.dark-mode .products,
+body.dark-mode .contact,
+body.dark-mode .vendors,
+body.dark-mode .location,
+body.dark-mode #ourProducts {
+    background: #0f1620;
+}
+
+body.dark-mode .why-us {
+    background: #131c28;
+}
+
+body.dark-mode .stat-card,
+body.dark-mode .feature-card,
+body.dark-mode .card,
+body.dark-mode .testimonial-card,
+body.dark-mode .contact-info,
+body.dark-mode .contact-form,
+body.dark-mode .gallery-item,
+body.dark-mode .product-card {
+    background: #1a2433;
+    color: #e8edf2;
+    box-shadow: 0 12px 30px rgba(0,0,0,.4);
+}
+
+body.dark-mode .about-content p,
+body.dark-mode .feature-card p,
+body.dark-mode .card-content p,
+body.dark-mode .testimonial-card p,
+body.dark-mode .section-title p,
+body.dark-mode .product-card .stock {
+    color: #a9b4c0;
+}
+
+body.dark-mode .about-content h2,
+body.dark-mode .why-us h2,
+body.dark-mode .section-title h2,
+body.dark-mode .card-content h3,
+body.dark-mode .feature-card h3,
+body.dark-mode .stat-card h2,
+body.dark-mode .contact-info h3,
+body.dark-mode .product-card h4 {
+    color: #6fb3ff;
+}
+
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea {
+    background: #0f1620;
+    border-color: #2a3648;
+    color: #e8edf2;
+}
+
+body.dark-mode .navbar:not(.scrolled) {
+    background: rgba(15,22,32,.55);
+}
+
+body.dark-mode .navbar.scrolled {
+    background: rgba(15,22,32,.9);
+}
+
+body.dark-mode footer {
+    background: #05080c;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #1a2433;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #2a3648;
+}
