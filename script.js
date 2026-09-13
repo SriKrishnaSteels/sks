@@ -93,7 +93,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ================= CONTACT FORM =================
 
 // Paste the /exec URL from your Apps Script deployment (Deploy > Manage deployments) here.
-const CONTACT_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbyV6x-bAPmZZiOlb8bLJx-ZILRDQrNHXM1oVrnniJd1FRr6TddL5npINNmiXrXuQt-H/exec";
+const CONTACT_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwgZDIrCXhcvtGCJSUIeCrlUMFeeiWKTSV4T7xmIPyqKKqL1j3KqmRDPN1Qdv3MZtQB/exec";
 
 const contactForm = document.getElementById("contactForm");
 
@@ -209,6 +209,26 @@ document.querySelectorAll(".primary-btn").forEach(button => {
         this.appendChild(circle);
     });
 });
+
+// ================= DARK MODE =================
+
+const themeToggle = document.getElementById("themeToggle");
+
+function applyTheme(isDark) {
+    document.body.classList.toggle("dark-mode", isDark);
+    if (themeToggle) themeToggle.textContent = isDark ? "☀️" : "🌙";
+}
+
+// Shared with shop/index.html via the same localStorage key, so the choice carries over
+applyTheme(localStorage.getItem("sks-theme") === "dark");
+
+if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+        const isDark = !document.body.classList.contains("dark-mode");
+        applyTheme(isDark);
+        localStorage.setItem("sks-theme", isDark ? "dark" : "light");
+    });
+}
 
 // ================= PAGE LOADED =================
 
