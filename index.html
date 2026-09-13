@@ -1,309 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- shop/index -->
+
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Shop | Sri Krishna Steels</title>
+    <title>Sri Krishna Steels | Premium Steel & Cement Supplier</title>
 
     <meta name="description"
-        content="Browse our full range of steel, cement and construction materials.">
+        content="Sri Krishna Steels - Premium Steel, Cement, Hardware & Construction Materials.">
+
+    <meta name="keywords"
+        content="Steel,Cement,TMT Bars,Construction,Sri Krishna Steels">
+
+    <meta name="author" content="Aadhavan Mathivanan - Website Designer">
 
     <meta name="theme-color" content="#003B73">
 
+    <meta name="robots" content="index, follow">
+
     <link rel="icon" href="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png">
 
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HardwareStore",
+        "name": "Sri Krishna Steels",
+        "image": "https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png",
+        "url": "https://mrreason761.github.io/sks/",
+        "telephone": ["+91 99444 68655", "+91 97918 44139", "+91 99944 47110"],
+        "email": "srikrishnasteels.sks@gmail.com",
+        "priceRange": "₹₹",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Thirukovilur Road",
+            "addressLocality": "Sankarapuram",
+            "addressRegion": "Tamil Nadu",
+            "postalCode": "606401",
+            "addressCountry": "IN"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 11.890727,
+            "longitude": 78.9177239
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens": "09:00",
+            "closes": "19:00"
+        }
+    }
+    </script>
+
     <!-- ================= PWA / INSTALLABLE APP SETUP ================= -->
-    <link rel="manifest" href="../manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SKS Steels">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png">
 
-    <style>
-        .shop-header {
-            background: #003B73;
-            color: #fff;
-            padding: 60px 5% 40px;
-            text-align: center;
-            position: relative;
-        }
-        .theme-toggle {
-            position: absolute;
-            top: 16px;
-            right: 5%;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.3rem;
-            color: #fff;
-            line-height: 1;
-        }
-        .shop-header h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-        .shop-header p {
-            color: #cfe0f0;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 16px;
-            color: #cfe0f0;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        .shop-products {
-            padding: 50px 5% 90px;
-        }
-        #productList {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        .product-card {
-            background: #fff;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 20px;
-            width: 240px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            text-align: left;
-        }
-        .product-card h4 {
-            margin: 0 0 10px;
-            color: #003B73;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .product-card img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 12px;
-        }
-        .product-card .price {
-            color: #b23b3b;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .product-card .stock {
-            font-size: 13px;
-            color: #777;
-            margin-top: 6px;
-        }
-        .product-card .enquire-btn {
-            display: block;
-            text-align: center;
-            margin-top: 12px;
-            padding: 10px;
-            background: #25D366;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .product-card .enquire-btn:hover {
-            background: #1ebe5b;
-        }
-        .enquiry-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .enquiry-check {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: #444;
-            cursor: pointer;
-        }
-        .enquiry-qty {
-            width: 55px;
-            padding: 4px 6px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 13px;
-            text-align: center;
-        }
-        .enquiry-qty:disabled {
-            background: #f2f2f2;
-            color: #aaa;
-        }
-        .enquiry-bar {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translate(-50%, 140%);
-            opacity: 0;
-            pointer-events: none;
-            width: 92%;
-            max-width: 480px;
-            background: linear-gradient(135deg, #003B73, #005792);
-            color: #fff;
-            padding: 12px 12px 12px 22px;
-            border-radius: 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 14px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
-            z-index: 1000;
-            transition: transform .35s ease, opacity .35s ease;
-        }
-        .enquiry-bar.show {
-            transform: translate(-50%, 0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .enquiry-bar .enquiry-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        .enquiry-badge {
-            background: #F2B134;
-            color: #111;
-            font-weight: 800;
-            font-size: 13px;
-            min-width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 6px;
-            flex-shrink: 0;
-        }
-        .clear-btn {
-            background: none;
-            border: none;
-            color: #cfe0f0;
-            font-size: 20px;
-            line-height: 1;
-            cursor: pointer;
-            padding: 0 2px;
-        }
-        .clear-btn:hover {
-            color: #fff;
-        }
-        .send-btn {
-            background: #25D366;
-            color: #fff;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            white-space: nowrap;
-            transition: .25s;
-        }
-        .send-btn:hover {
-            background: #1ebe5b;
-            transform: translateY(-2px);
-        }
-        .search-wrap {
-            max-width: 480px;
-            margin: 0 auto 30px;
-        }
-        #productSearch {
-            width: 100%;
-            padding: 12px 18px;
-            border: 1px solid #ccc;
-            border-radius: 30px;
-            font-size: 15px;
-            font-family: inherit;
-            outline: none;
-            transition: .25s;
-        }
-        #productSearch:focus {
-            border-color: #003B73;
-            box-shadow: 0 0 0 3px rgba(0,59,115,0.12);
-        }
-
-        /* Dark mode */
-        body.dark-mode {
-            background: #0f1620;
-            color: #e8edf2;
-        }
-        body.dark-mode .shop-products {
-            background: #0f1620;
-        }
-        body.dark-mode .product-card {
-            background: #1a2433;
-            border-color: #2a3648;
-        }
-        body.dark-mode .product-card h4 {
-            color: #6fb3ff;
-        }
-        body.dark-mode .product-card .stock {
-            color: #a9b4c0;
-        }
-        body.dark-mode #productSearch {
-            background: #1a2433;
-            border-color: #2a3648;
-            color: #e8edf2;
-        }
-    </style>
-
 </head>
 
 <body>
 
-<div class="shop-header">
+<!-- ================= NAVBAR ================= -->
+
+<header>
+
+<nav class="navbar">
+
+    <a href="#home" class="logo">
+
+        <img src="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png"
+     alt="Sri Krishna Steels Logo"
+     loading="eager">
+
+        <span>Sri Krishna Steels</span>
+
+    </a>
+
+    <ul class="nav-links">
+
+        <li><a href="#home">Home</a></li>
+
+        <li><a href="#about">About</a></li>
+
+        <li><a href="#products">Products</a></li>
+
+        <li><a href="#vendors">Vendors</a></li>
+
+        <li><a href="#contact">Contact</a></li>
+
+    </ul>
+
+    <a href="shop/index.html"
+       class="shop-button">
+
+        Shop Now
+
+    </a>
+
+    <div class="translate-widget">
+
+        <div id="google_translate_element" class="google-translate-widget"></div>
+    </div>
+
     <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">🌙</button>
-    <h1>Our Shop</h1>
-    <p>Browse our live inventory of steel, cement and construction materials.</p>
-    <a href="../index.html" class="back-link">&larr; Back to Home</a>
+
+    <button class="hamburger" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+</nav>
+
+</header>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <h1>
+
+            Building Tomorrow
+
+            <span>With Strength.</span>
+
+        </h1>
+
+        <p>
+
+            Trusted supplier of premium steel,
+            cement and construction materials.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#products"
+               class="primary-btn">
+
+                Explore Products
+
+            </a>
+
+            <a href="#contact"
+               class="secondary-btn">
+
+                Contact Us
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= STATS ================= -->
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <h2>5+</h2>
+
+        <p>Years of Experience</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h2>5000+</h2>
+
+        <p>Satisfied Customers</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h2>100+</h2>
+
+        <p>Products</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <h2>24/7</h2>
+
+        <p>Support</p>
+
+    </div>
+
+</section>
+
+<!-- ================= ABOUT ================= -->
+
+<section class="about" id="about">
+
+<div class="about-container">
+
+<div class="about-image">
+
+<img src="https://i.ibb.co/3YjVnnwv/Screenshot-2026-07-06-174318.png"
+     alt="Sri Krishna Steels Warehouse"
+     loading="lazy">
+
 </div>
 
-<section class="shop-products">
+<div class="about-content">
 
-    <div class="search-wrap">
-        <input type="text" id="productSearch" placeholder="Search products..." aria-label="Search products">
+<h2>
+
+About Sri Krishna Steels
+
+</h2>
+
+<p>
+
+Sri Krishna Steels is committed to
+providing premium-quality steel,
+cement and construction materials
+to builders, contractors and
+homeowners.
+
+</p>
+
+<p>
+
+Our focus is on quality,
+competitive pricing,
+fast delivery
+and long-term customer relationships.
+
+</p>
+
+<a href="#products"
+class="primary-btn">
+
+View Products
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= FEATURES ================= -->
+
+<section class="why-us">
+
+<h2>
+
+Why Choose Us?
+
+</h2>
+
+<div class="features-grid">
+
+<div class="feature-card">
+
+<h3>Premium Quality</h3>
+
+<p>
+
+Only genuine brands and certified products.
+
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<h3>Fast Delivery</h3>
+
+<p>
+
+Quick delivery across Tamil Nadu.
+
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<h3>Competitive Pricing</h3>
+
+<p>
+
+Excellent value with trusted quality.
+
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<h3>Customer Support</h3>
+
+<p>
+
+Friendly assistance before and after every purchase.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+<!-- ================= PRODUCTS ================= -->
+
+<section class="products" id="products">
+
+    <div class="section-title">
+        <h2>Featured Products</h2>
+        <p>Amazing materials from highly trusted companies.</p>
+    </div>
+
+    <div class="product-grid">
+
+        <div class="card">
+
+            <img src="https://www.morecambemetals.co.uk/wp-content/uploads/2018/03/stainless-steel.jpg"
+                 alt="Premium Steel Products"
+                 loading="lazy">
+
+            <div class="card-content">
+
+                <h3>Steel Products</h3>
+
+                <p>
+                    TMT Bars, Angles, Channels, Pipes,
+                    Beams and Structural Steel.
+                </p>
+
+                <a href="shop/index.html" class="primary-btn">
+                    View Products
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <img src="https://s7ap1.scene7.com/is/image/TslDXP/cement-the-foundation-of-modern-construction?fmt=webp-alpha"
+                 alt="Premium Cement"
+                 loading="lazy">
+
+            <div class="card-content">
+
+                <h3>Cement</h3>
+
+                <p>
+                    Cements to build your amazing creations.
+                </p>
+
+                <a href="shop/index.html" class="primary-btn">
+                    View Products
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <img src="https://i0.wp.com/movingtips.wpengine.com/wp-content/uploads/2021/04/concrete-paint.jpg?fit=400%2C683&ssl=1"
+                 alt="Paints"
+                 loading="lazy">
+
+            <div class="card-content">
+
+                <h3>Paints</h3>
+
+                <p>
+                    Paints to customize your newly-built buildings.
+                </p>
+
+                <a href="shop/index.html" class="primary-btn">
+                    View Products
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= LIVE INVENTORY ================= -->
+
+<section id="ourProducts">
+
+    <div class="section-title">
+        <h2>Our Products</h2>
+        <p>Live inventory, updated directly by our team.</p>
     </div>
 
     <div id="productList">Loading products...</div>
 
 </section>
 
-<div id="enquiryBar" class="enquiry-bar">
-    <div class="enquiry-info">
-        <span class="enquiry-badge" id="enquiryCount">0</span>
-        <span>item(s) selected</span>
-        <button type="button" class="clear-btn" id="clearEnquiryBtn" title="Clear list" aria-label="Clear enquiry list">&times;</button>
-    </div>
-    <button type="button" id="sendEnquiryBtn" class="send-btn">
-        <svg viewBox="0 0 32 32" width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M22.5 9.5a8.9 8.9 0 0 0-14.6 9.9L7 26l6.8-1.8a8.9 8.9 0 0 0 12.6-7.9 8.8 8.8 0 0 0-2.6-6.3l-1.3-1.5zM16 23.6a7.4 7.4 0 0 1-3.8-1l-.3-.2-2.8.8.8-2.7-.2-.3a7.5 7.5 0 1 1 6.3 3.4z" fill="#fff"/>
-        </svg>
-        Send Enquiry
-    </button>
-</div>
+<style>
+    #ourProducts { padding: 30px 5%; }
+    #productList { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+    .product-card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 16px; width: 220px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+    .product-card h4 { margin: 0 0 8px; color: #003B73; }
+    .product-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; }
+    .product-card .price { color: #b23b3b; font-weight: bold; font-size: 16px; }
+    .product-card .stock { font-size: 13px; color: #777; margin-top: 4px; }
+    .product-card .enquire-btn { display: block; text-align: center; margin-top: 10px; padding: 8px; background: #25D366; color: #fff; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600; }
+    .product-card .enquire-btn:hover { background: #1ebe5b; }
+</style>
 
 <script type="text/javascript">
     // Inventory comes from a published Google Sheet (no Firebase needed).
@@ -337,17 +466,6 @@
         return rows;
     }
 
-    // Tracks which items the customer has checked for a combined enquiry.
-    // Maps item name -> its checkbox element, so "Clear" can uncheck them too.
-    const enquiryList = new Map();
-
-    function updateEnquiryBar() {
-        const bar = document.getElementById("enquiryBar");
-        const countSpan = document.getElementById("enquiryCount");
-        countSpan.textContent = enquiryList.size;
-        bar.classList.toggle("show", enquiryList.size > 0);
-    }
-
     function createProductCard(item) {
         const card = document.createElement("div");
         card.className = "product-card";
@@ -375,76 +493,19 @@
         const stockCount = Number(item.stock) || 0;
         stock.textContent = stockCount > 0 ? `In stock: ${stockCount}` : "Out of stock";
 
-        const itemName = item.name || "Unnamed product";
-
-        const checkRow = document.createElement("div");
-        checkRow.className = "enquiry-row";
-
-        const checkLabel = document.createElement("label");
-        checkLabel.className = "enquiry-check";
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-
-        const qtyInput = document.createElement("input");
-        qtyInput.type = "number";
-        qtyInput.className = "enquiry-qty";
-        qtyInput.min = "1";
-        qtyInput.value = "1";
-        qtyInput.disabled = true;
-        qtyInput.setAttribute("aria-label", `Quantity for ${itemName}`);
-
-        checkbox.addEventListener("change", () => {
-            qtyInput.disabled = !checkbox.checked;
-            if (checkbox.checked) {
-                enquiryList.set(itemName, { checkbox, qtyInput });
-            } else {
-                enquiryList.delete(itemName);
-            }
-            updateEnquiryBar();
-        });
-
-        qtyInput.addEventListener("input", () => {
-            if (qtyInput.value === "" || Number(qtyInput.value) < 1) qtyInput.value = "1";
-        });
-
-        // If this item is already in the enquiry list (e.g. re-rendered after a search),
-        // restore its checked/quantity state and point the list at these fresh elements.
-        const existingEntry = enquiryList.get(itemName);
-        if (existingEntry) {
-            checkbox.checked = true;
-            qtyInput.disabled = false;
-            qtyInput.value = existingEntry.qtyInput.value;
-            enquiryList.set(itemName, { checkbox, qtyInput });
-        }
-
-        checkLabel.append(checkbox, document.createTextNode(" Add to enquiry list"));
-        checkRow.append(checkLabel, qtyInput);
-
         const enquireBtn = document.createElement("a");
         enquireBtn.className = "enquire-btn";
         enquireBtn.target = "_blank";
         enquireBtn.rel = "noopener noreferrer";
-        const enquiryText = `Hi, I'm interested in this item: ${itemName}`;
+        const enquiryText = `Hi, I'm interested in this item: ${item.name || "an item on your site"}`;
         enquireBtn.href = `https://wa.me/919944468655?text=${encodeURIComponent(enquiryText)}`;
         enquireBtn.textContent = "Enquire on WhatsApp";
 
-        card.append(img, name, price, stock, checkRow, enquireBtn);
+        card.append(img, name, price, stock, enquireBtn);
         return card;
     }
 
-    let allItems = [];
-
-    function renderItems(items, emptyMessage) {
-        const listDiv = document.getElementById("productList");
-        if (items.length === 0) {
-            listDiv.innerHTML = `<p>${emptyMessage}</p>`;
-            return;
-        }
-        listDiv.innerHTML = "";
-        items.forEach(item => listDiv.appendChild(createProductCard(item)));
-    }
-
-    async function loadProducts() {
+    async function loadPublicItems() {
         const listDiv = document.getElementById("productList");
         try {
             const res = await fetch(SHOP_SHEET_CSV_URL);
@@ -457,72 +518,205 @@
             const stockIdx = header.indexOf("stock");
             const imageIdx = header.indexOf("image");
 
-            allItems = rows.slice(1)
+            const items = rows.slice(1)
                 .filter(r => r[nameIdx] && r[nameIdx].trim() !== "")
                 .map(r => ({ name: r[nameIdx], price: r[priceIdx], stock: r[stockIdx], image: imageIdx >= 0 ? r[imageIdx] : "" }));
 
-            renderItems(allItems, "No products available right now. Please check back soon.");
+            if (items.length === 0) {
+                listDiv.textContent = "No products available right now.";
+                return;
+            }
+
+            listDiv.innerHTML = "";
+            items.forEach(item => listDiv.appendChild(createProductCard(item)));
         } catch (err) {
-            listDiv.innerHTML = "<p>Unable to load products right now. Please try again later.</p>";
-            console.error(err);
+            console.error("Error loading products:", err);
+            listDiv.textContent = "Failed to load products. Please try again later.";
         }
     }
 
-    document.getElementById("productSearch").addEventListener("input", (e) => {
-        const term = e.target.value.trim().toLowerCase();
-        const filtered = term === ""
-            ? allItems
-            : allItems.filter(item => (item.name || "").toLowerCase().includes(term));
-        renderItems(filtered, "No items match your search.");
-    });
+    loadPublicItems();
+</script>
 
-    loadProducts();
+<!-- ================= VENDORS ================= -->
+<!-- This section was linked from the navbar (#vendors) but didn't exist yet -->
 
-    document.getElementById("sendEnquiryBtn").addEventListener("click", () => {
-        const entries = Array.from(enquiryList.entries());
-        if (entries.length === 0) return;
+<section class="vendors" id="vendors">
 
-        const itemLines = entries
-            .map(([itemName, refs], i) => `${i + 1}. ${itemName} — Qty: ${refs.qtyInput.value}`)
-            .join("\n");
-        const message = `Hi, I'd like to enquire about the following items:\n${itemLines}`;
-        window.open(`https://wa.me/919944468655?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
-    });
+    <div class="section-title">
+        <h2>Our Vendors</h2>
+        <p>We partner with trusted, certified brands across steel, cement and hardware.</p>
+    </div>
 
-    document.getElementById("clearEnquiryBtn").addEventListener("click", () => {
-        enquiryList.forEach(({ checkbox, qtyInput }) => {
-            checkbox.checked = false;
-            qtyInput.disabled = true;
-            qtyInput.value = "1";
-        });
-        enquiryList.clear();
-        updateEnquiryBar();
-    });
+    <div class="gallery">
 
-    // Dark mode — shared with index.html via the same localStorage key
-    const themeToggle = document.getElementById("themeToggle");
+        <div class="gallery-item">
+            <img src="https://placehold.co/400x320?text=Vendor+1" alt="Vendor partner logo" loading="lazy">
+        </div>
 
-    function applyTheme(isDark) {
-        document.body.classList.toggle("dark-mode", isDark);
-        if (themeToggle) themeToggle.textContent = isDark ? "☀️" : "🌙";
-    }
+        <div class="gallery-item">
+            <img src="https://placehold.co/400x320?text=Vendor+2" alt="Vendor partner logo" loading="lazy">
+        </div>
 
-    applyTheme(localStorage.getItem("sks-theme") === "dark");
+        <div class="gallery-item">
+            <img src="https://placehold.co/400x320?text=Vendor+3" alt="Vendor partner logo" loading="lazy">
+        </div>
 
-    if (themeToggle) {
-        themeToggle.addEventListener("click", () => {
-            const isDark = !document.body.classList.contains("dark-mode");
-            applyTheme(isDark);
-            localStorage.setItem("sks-theme", isDark ? "dark" : "light");
-        });
+    </div>
+
+</section>
+
+<!-- ================= CONTACT ================= -->
+<!-- This section was linked from the navbar (#contact) but didn't exist yet -->
+
+<section class="contact" id="contact">
+
+    <div class="section-title">
+        <h2>Contact Us</h2>
+        <p>Reach out for quotes, bulk orders or delivery enquiries.</p>
+    </div>
+
+    <div class="contact-container">
+
+        <div class="contact-info">
+
+            <h3>Get in Touch</h3>
+
+            <p>Address: Thirukovilur Road, Sankarapuram, Tamil Nadu 606401, India</p>
+            <p>Phone: +91 99444 68655, +91 97918 44139, +91 99944 47110</p>
+            <p>Email: <a href="mailto:srikrishnasteels.sks@gmail.com" style="color:inherit;">srikrishnasteels.sks@gmail.com</a></p>
+            <p>Hours: Mon-Sat, 9:00 AM - 7:00 PM</p>
+
+        </div>
+
+        <div class="contact-form">
+
+            <form id="contactForm">
+
+                <!-- Honeypot field: hidden from real visitors, bots often fill it in anyway -->
+                <input type="text" name="website" id="website" autocomplete="off" tabindex="-1"
+                       style="position:absolute; left:-9999px;" aria-hidden="true">
+
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="tel" name="phone" placeholder="Your Phone Number">
+                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+
+                <button type="submit" class="primary-btn">Send Message</button>
+                <div id="contactFormMsg" style="margin-top:10px; font-size:14px;"></div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= LOCATION ================= -->
+
+<section class="location">
+
+    <div class="map-container">
+        <iframe
+            src="https://www.google.com/maps?q=11.890727,78.9177239&output=embed"
+            width="100%" height="400" loading="lazy" allowfullscreen
+            title="Sri Krishna Steels location map">
+        </iframe>
+    </div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div class="footer-logo">
+            <img src="https://i.postimg.cc/sDcR0d3W/Screenshot-2026-07-01-153919.png" alt="Sri Krishna Steels Logo">
+            <h2>Sri Krishna Steels</h2>
+            <p>Your trusted partner for premium steel, cement and construction materials.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#products">Products</a>
+            <a href="#vendors">Vendors</a>
+            <a href="#contact">Contact</a>
+            <a href="admin-login.html">Admin Login</a>
+        </div>
+
+        <div class="footer-products">
+            <h3>Our Products</h3>
+            <p>TMT Bars & Structural Steel</p>
+            <p>Cement</p>
+            <p>Paints</p>
+            <p>Hardware & Tools</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Sri Krishna Steels. All rights reserved.</p>
+    </div>
+
+</footer>
+
+<button id="topBtn" type="button" aria-label="Back to top">&uarr;</button>
+
+<!-- Floating click-to-call button — stacked above WhatsApp -->
+<a href="tel:+919944468655" class="call-float" aria-label="Call us">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="12" cy="12" r="12" fill="#003B73"/>
+        <path d="M8.3 7.2c.3-.3.7-.3 1 0l1.4 1.4c.3.3.3.8 0 1.1l-.7.7c-.2.2-.2.5-.1.7.6 1 1.4 1.8 2.4 2.4.2.1.5.1.7-.1l.7-.7c.3-.3.8-.3 1.1 0l1.4 1.4c.3.3.3.7 0 1-1 1-2.3 1.4-3.6 1-2.1-.6-3.9-2.4-4.5-4.5-.4-1.3 0-2.6 1-3.6z" fill="#fff"/>
+    </svg>
+</a>
+
+<!-- Floating WhatsApp chat button — swap the number below if you'd rather use a different one -->
+<a href="https://wa.me/919944468655?text=Hi%2C%20I%27m%20interested%20in%20your%20products."
+   class="whatsapp-float"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="Chat with us on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="16" cy="16" r="16" fill="#25D366"/>
+        <path d="M22.5 9.5a8.9 8.9 0 0 0-14.6 9.9L7 26l6.8-1.8a8.9 8.9 0 0 0 12.6-7.9 8.8 8.8 0 0 0-2.6-6.3l-1.3-1.5zM16 23.6a7.4 7.4 0 0 1-3.8-1l-.3-.2-2.8.8.8-2.7-.2-.3a7.5 7.5 0 1 1 6.3 3.4z" fill="#fff"/>
+        <path d="M19.9 17.9c-.2-.1-1.3-.6-1.5-.7-.2-.1-.3-.1-.5.1s-.6.7-.7.9-.3.2-.5.1a6.1 6.1 0 0 1-1.8-1.1 6.7 6.7 0 0 1-1.2-1.5c-.1-.2 0-.3.1-.5l.3-.4c.1-.1.1-.2.2-.4a.4.4 0 0 0 0-.4c-.1-.1-.5-1.2-.7-1.7s-.4-.4-.5-.4h-.4a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9 4.6 4.6 0 0 0 1 2.4 10.2 10.2 0 0 0 4 3.5 4.6 4.6 0 0 0 2.8.6 2.4 2.4 0 0 0 1.6-1.1 1.9 1.9 0 0 0 .1-1.1c-.1-.1-.2-.2-.4-.3z" fill="#fff"/>
+    </svg>
+</a>
+
+<!-- ================= GOOGLE TRANSLATE SCRIPT ================= -->
+<!-- Default new visitors to Tamil since that's our primary audience. If a visitor has already
+     picked a language before (including switching back to English), this leaves their choice alone. -->
+<script type="text/javascript">
+    if (!document.cookie.includes("googtrans")) {
+        document.cookie = "googtrans=/en/ta;path=/";
     }
 </script>
+<!-- googleTranslateElementInit must stay a global function (not inside script.js's module)
+     because Google's translate script looks for it on `window` via the `cb=` callback param. -->
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            { pageLanguage: "en", includedLanguages: "en,ta", autoDisplay: false },
+            "google_translate_element"
+        );
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+<!-- script.js uses `import`, so it must be loaded as a module -->
+<script type="module" src="script.js"></script>
 
 <!-- Registers the service worker so the site can be installed as an app -->
 <script type="text/javascript">
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
-            navigator.serviceWorker.register("../sw.js").catch((err) => {
+            navigator.serviceWorker.register("./sw.js").catch((err) => {
                 console.error("Service worker registration failed:", err);
             });
         });
