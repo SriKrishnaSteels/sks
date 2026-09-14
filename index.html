@@ -688,6 +688,23 @@ Friendly assistance before and after every purchase.
     </svg>
 </a>
 
+<!-- Live chat widget — right side, so it doesn't collide with WhatsApp/call on the left -->
+<div id="chatWindow" class="chat-window">
+    <div class="chat-header">
+        <span>Chat with us</span>
+        <button type="button" id="chatCloseBtn" aria-label="Close chat">&times;</button>
+    </div>
+    <div id="chatMessages" class="chat-messages">
+        <div class="chat-msg chat-msg-bot">Hi! Ask me anything about our products, hours, or location — I'll do my best to help. 😊</div>
+    </div>
+    <form id="chatForm" class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off" required>
+        <button type="submit" aria-label="Send">➤</button>
+    </form>
+</div>
+
+<button id="chatToggleBtn" class="chat-toggle" type="button" aria-label="Open chat">💬</button>
+
 <!-- ================= GOOGLE TRANSLATE SCRIPT ================= -->
 <!-- Default new visitors to Tamil since that's our primary audience. If a visitor has already
      picked a language before (including switching back to English), this leaves their choice alone. -->
