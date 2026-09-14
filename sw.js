@@ -1,4 +1,4 @@
-const CACHE_NAME = "sks-cache-v7";
+const CACHE_NAME = "sks-cache-v8";
 
 // Core files needed for the site to still open when offline.
 // Bump CACHE_NAME (e.g. to "sks-cache-v2") whenever you want visitors
