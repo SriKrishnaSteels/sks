@@ -210,6 +210,72 @@ document.querySelectorAll(".primary-btn").forEach(button => {
     });
 });
 
+// ================= LIVE CHAT WIDGET =================
+// Reuses the same Apps Script endpoint as the contact form, with a "chat"
+// type flag so the backend knows to just answer and reply, not log a lead.
+
+const chatToggleBtn = document.getElementById("chatToggleBtn");
+const chatCloseBtn = document.getElementById("chatCloseBtn");
+const chatWindow = document.getElementById("chatWindow");
+const chatForm = document.getElementById("chatForm");
+const chatInput = document.getElementById("chatInput");
+const chatMessages = document.getElementById("chatMessages");
+
+function addChatMessage(text, sender) {
+    const msg = document.createElement("div");
+    msg.className = `chat-msg chat-msg-${sender}`;
+    msg.textContent = text;
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return msg;
+}
+
+if (chatToggleBtn && chatWindow) {
+    chatToggleBtn.addEventListener("click", () => {
+        chatWindow.classList.toggle("open");
+        if (chatWindow.classList.contains("open")) chatInput.focus();
+    });
+}
+
+if (chatCloseBtn && chatWindow) {
+    chatCloseBtn.addEventListener("click", () => chatWindow.classList.remove("open"));
+}
+
+if (chatForm) {
+    chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        addChatMessage(text, "user");
+        chatInput.value = "";
+
+        const typingMsg = addChatMessage("Typing...", "bot");
+        typingMsg.classList.add("chat-msg-typing");
+
+        if (!CONTACT_FORM_ENDPOINT || CONTACT_FORM_ENDPOINT.includes("PASTE_YOUR")) {
+            typingMsg.textContent = "Chat isn't connected yet — please use WhatsApp or call us instead.";
+            typingMsg.classList.remove("chat-msg-typing");
+            return;
+        }
+
+        try {
+            const res = await fetch(CONTACT_FORM_ENDPOINT, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ type: "chat", message: text })
+            });
+            const data = await res.json();
+            typingMsg.textContent = data.reply || "Sorry, I couldn't get an answer just now.";
+        } catch (err) {
+            console.error("Chat request failed:", err);
+            typingMsg.textContent = "Sorry, something went wrong. Please try WhatsApp or call us instead.";
+        } finally {
+            typingMsg.classList.remove("chat-msg-typing");
+        }
+    });
+}
+
 // ================= DARK MODE =================
 
 const themeToggle = document.getElementById("themeToggle");
